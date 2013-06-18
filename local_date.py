@@ -9,7 +9,7 @@ import sys
 
 INPUT_FORMAT = '%a, %d %b %Y %H:%M:%S %z'
 OUTPUT_FORMAT = "%a, %d %b %Y %I:%M:%S %p"
-EXPR = "Date:.(\w{3},.\w{2}.\w{3}.{4}\d.\d{2}:\d{2}:\d{2}.[+-]\d{4})"
+EXPR = "Date:.(\w{3},.\w{1,2}.\w{3}.{4}\d.\d{2}:\d{2}:\d{2}.[+-]\d{4})"
 
 
 def to_local_datetime(date_matches):
