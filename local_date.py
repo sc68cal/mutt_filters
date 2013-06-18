@@ -1,16 +1,20 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.3
 """
 Converts Date: headers in a mail message
 to local timezone
 """
-from dateutil import parser, tz
+import datetime
 import re
 import sys
 
+INPUT_FORMAT = '%a, %d %b %Y %H:%M:%S %z'
+OUTPUT_FORMAT = "%a, %d %b %Y %I:%M:%S %p"
+
 
 def to_local_datetime(date_matches):
-    date = parser.parse(date_matches.group(1).strip())
-    return date.astimezone(tz.tzlocal())
+    date = datetime.datetime.strptime(date_matches.group(1).strip(),
+                                      INPUT_FORMAT)
+    return date.astimezone()
 
 if __name__ == "__main__":
     reg = re.compile("Date:(.*)")
@@ -19,6 +23,6 @@ if __name__ == "__main__":
         if matches:
             date = to_local_datetime(matches)
             sys.stdout.write("Date: %s\n" %
-                             date.strftime("%a, %d %b %Y %I:%M:%S %p"))
+                             date.strftime(OUTPUT_FORMAT))
         else:
             sys.stdout.write(line)
