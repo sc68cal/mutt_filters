@@ -18,12 +18,17 @@ def to_local_datetime(date_matches):
     return date.astimezone()
 
 if __name__ == "__main__":
+    found = False
     reg = re.compile(EXPR)
     for line in sys.stdin:
-        matches = reg.match(line)
-        if matches:
-            date = to_local_datetime(matches)
-            sys.stdout.write("Date: %s\n" %
-                             date.strftime(OUTPUT_FORMAT))
+        if not found:
+            matches = reg.match(line)
+            if matches:
+                date = to_local_datetime(matches)
+                sys.stdout.write("Date: %s\n" %
+                                 date.strftime(OUTPUT_FORMAT))
+                found = True
+            else:
+                sys.stdout.write(line)
         else:
             sys.stdout.write(line)
