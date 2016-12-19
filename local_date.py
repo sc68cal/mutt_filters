@@ -4,6 +4,7 @@ Converts Date: headers in a mail message
 to local timezone
 """
 import datetime
+import io
 import re
 import sys
 
@@ -20,7 +21,11 @@ def to_local_datetime(date_matches):
 if __name__ == "__main__":
     found = False
     reg = re.compile(EXPR)
-    for line in sys.stdin:
+    # Replace characters when we hit a UnicodeDecodeError
+    # https://docs.python.org/3.3/library/codecs.html?highlight=replace#codec-base-classes
+    input_stream = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8',
+                                    errors='replace')
+    for line in input_stream:
         if not found:
             matches = reg.match(line)
             if matches:
